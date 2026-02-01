@@ -1,6 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Music, Play, Pause, Plus, Trash2, Heart, ExternalLink } from 'lucide-react';
+import {
+  Music,
+  Play,
+  Pause,
+  Plus,
+  Trash2,
+  Heart,
+  ExternalLink,
+} from 'lucide-react';
 import PageWrapper from '@/components/PageWrapper';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,64 +25,47 @@ interface Song {
   id: string;
   name: string;
   meaning: string;
-  type: 'spotify' | 'file';
+  type: 'spotify' | 'mp3';
   url: string;
 }
 
+const STORAGE_KEY = 'our_love_songs';
+
 const MusicPage = () => {
-  // 🔐 CARREGA DO LOCALSTORAGE AO ABRIR
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem('songs');
+    const saved = localStorage.getItem(STORAGE_KEY);
     return saved
       ? JSON.parse(saved)
-      : [
-          {
-            id: '1',
-            name: 'Perfect - Ed Sheeran',
-            meaning: 'Nossa música... perfeita como nosso amor.',
-            type: 'spotify',
-            url: 'https://open.spotify.com/track/0tgVpDi06FyKpA1z0VMD4v',
-          },
-        ];
+      : [];
   });
 
-  // 💾 SALVA NO LOCALSTORAGE SEMPRE QUE MUDAR
   useEffect(() => {
-    localStorage.setItem('songs', JSON.stringify(songs));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(songs));
   }, [songs]);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newSong, setNewSong] = useState({ name: '', meaning: '', url: '' });
   const [currentPlaying, setCurrentPlaying] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   const addSong = () => {
     if (!newSong.name || !newSong.url) return;
 
     const isSpotify = newSong.url.includes('spotify');
 
-    setSongs([
-      ...songs,
+    setSongs((prev) => [
+      ...prev,
       {
         id: Date.now().toString(),
         name: newSong.name,
         meaning: newSong.meaning,
-        type: isSpotify ? 'spotify' : 'file',
+        type: isSpotify ? 'spotify' : 'mp3',
         url: newSong.url,
       },
     ]);
 
     setNewSong({ name: '', meaning: '', url: '' });
     setIsDialogOpen(false);
-  };
-
-  const removeSong = (id: string) => {
-    setSongs(songs.filter((song) => song.id !== id));
-
-    if (currentPlaying === id) {
-      setCurrentPlaying(null);
-      audioRef.current?.pause();
-    }
   };
 
   const togglePlay = (song: Song) => {
@@ -90,8 +81,16 @@ const MusicPage = () => {
       if (audioRef.current) {
         audioRef.current.src = song.url;
         audioRef.current.play();
+        setCurrentPlaying(song.id);
       }
-      setCurrentPlaying(song.id);
+    }
+  };
+
+  const removeSong = (id: string) => {
+    setSongs((prev) => prev.filter((s) => s.id !== id));
+    if (currentPlaying === id) {
+      audioRef.current?.pause();
+      setCurrentPlaying(null);
     }
   };
 
@@ -105,67 +104,68 @@ const MusicPage = () => {
           className="text-center mb-12"
         >
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-primary/10 flex items-center justify-center">
-            <Music className="text-primary" size={40} />
+            <Music size={40} className="text-primary" />
           </div>
-          <h1 className="font-display text-4xl md:text-5xl text-foreground mb-4">
-            Nossas Músicas
-          </h1>
+          <h1 className="font-display text-4xl mb-2">Nossas Músicas</h1>
           <p className="font-script text-2xl text-primary">
-            A trilha sonora do nosso amor
+            Sons que contam nossa história
           </p>
         </motion.div>
 
-        {/* Add Song */}
+        {/* Add */}
         <div className="flex justify-center mb-8">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                <Plus className="mr-2" size={20} />
-                Adicionar Música
+              <Button>
+                <Plus className="mr-2" /> Adicionar Música
               </Button>
             </DialogTrigger>
 
-            <DialogContent className="romantic-card">
+            <DialogContent>
               <DialogHeader>
-                <DialogTitle className="font-display text-2xl text-center">
-                  Nova Música Especial
+                <DialogTitle className="text-center text-2xl">
+                  Nova Música
                 </DialogTitle>
               </DialogHeader>
 
-              <div className="space-y-4 mt-4">
-                <Input
-                  placeholder="Nome da música"
-                  value={newSong.name}
-                  onChange={(e) => setNewSong({ ...newSong, name: e.target.value })}
-                />
+              <Input
+                placeholder="Nome da música"
+                value={newSong.name}
+                onChange={(e) =>
+                  setNewSong({ ...newSong, name: e.target.value })
+                }
+              />
 
-                <Input
-                  placeholder="Link Spotify ou MP3"
-                  value={newSong.url}
-                  onChange={(e) => setNewSong({ ...newSong, url: e.target.value })}
-                />
+              <Input
+                placeholder="Link Spotify ou MP3 direto"
+                value={newSong.url}
+                onChange={(e) =>
+                  setNewSong({ ...newSong, url: e.target.value })
+                }
+              />
 
-                <Textarea
-                  placeholder="Por que essa música é especial?"
-                  value={newSong.meaning}
-                  onChange={(e) =>
-                    setNewSong({ ...newSong, meaning: e.target.value })
-                  }
-                />
+              <Textarea
+                placeholder="Por que essa música é especial?"
+                value={newSong.meaning}
+                onChange={(e) =>
+                  setNewSong({ ...newSong, meaning: e.target.value })
+                }
+              />
 
-                <Button onClick={addSong} className="w-full">
-                  <Heart className="mr-2" size={18} />
-                  Adicionar
-                </Button>
-              </div>
+              <Button onClick={addSong} className="w-full">
+                <Heart className="mr-2" /> Adicionar
+              </Button>
             </DialogContent>
           </Dialog>
         </div>
 
-        {/* Songs */}
+        {/* List */}
         <div className="space-y-4">
           {songs.map((song) => (
-            <div key={song.id} className="romantic-card flex items-start gap-4">
+            <div
+              key={song.id}
+              className="romantic-card flex items-start gap-4"
+            >
               <button
                 onClick={() => togglePlay(song)}
                 className="w-14 h-14 rounded-full bg-secondary flex items-center justify-center"
@@ -182,7 +182,7 @@ const MusicPage = () => {
               <div className="flex-grow">
                 <h3 className="font-display">{song.name}</h3>
                 {song.meaning && (
-                  <p className="text-sm italic text-muted-foreground">
+                  <p className="italic text-muted-foreground text-sm">
                     "{song.meaning}"
                   </p>
                 )}
