@@ -1,41 +1,32 @@
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Music, ExternalLink } from 'lucide-react';
 import PageWrapper from '@/components/PageWrapper';
 import { Button } from '@/components/ui/button';
-import { supabase } from '@/integrations/supabase/client';
+import { SONGS } from '@/content/siteContent';
 
-interface Song {
-  id: string;
-  title: string;
-  spotify_url: string;
-  message: string;
-}
-
+/**
+ * Músicas fixas — vêm do código (siteContent.ts).
+ * Suporta arquivos locais em /public/musicas/ ou links do Spotify.
+ */
 const MusicPage = () => {
-  const [songs, setSongs] = useState<Song[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  // 🔹 BUSCAR MÚSICAS DO SUPABASE
-  useEffect(() => {
-    const fetchSongs = async () => {
-      const { data } = await supabase
-        .from('songs')
-        .select('*')
-        .order('created_at', { ascending: true });
-
-      if (data) setSongs(data);
-      setLoading(false);
-    };
-
-    fetchSongs();
-  }, []);
-
-  if (loading) {
+  if (SONGS.length === 0) {
     return (
       <PageWrapper>
-        <div className="text-center py-20 text-muted-foreground">
-          Carregando músicas...
+        <div className="container mx-auto max-w-4xl px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-12"
+          >
+            <Music size={40} className="mx-auto mb-4 text-primary" />
+            <h1 className="font-display text-4xl">Nossas Músicas</h1>
+            <p className="font-script text-2xl text-primary">
+              A trilha sonora do nosso amor
+            </p>
+          </motion.div>
+          <p className="text-center text-muted-foreground">
+            Adicione músicas em <code className="text-sm bg-muted px-1 rounded">src/content/siteContent.ts</code> na lista <code className="text-sm bg-muted px-1 rounded">SONGS</code>.
+          </p>
         </div>
       </PageWrapper>
     );
@@ -59,29 +50,43 @@ const MusicPage = () => {
 
         {/* LISTA DE MÚSICAS */}
         <div className="space-y-6">
-          {songs.map((song) => (
+          {SONGS.map((song, index) => (
             <motion.div
               key={song.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
               className="romantic-card p-6"
             >
-              <p className="font-script text-xl text-primary mb-4 text-center">
-                “{song.message}”
-              </p>
+              {song.message && (
+                <p className="font-script text-xl text-primary mb-4 text-center">
+                  "{song.message}"
+                </p>
+              )}
 
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <h3 className="text-lg font-semibold">{song.title}</h3>
 
-                <Button
-                  variant="ghost"
-                  onClick={() =>
-                    window.open(song.spotify_url, '_blank')
-                  }
-                >
-                  <ExternalLink className="mr-2" />
-                  Ouvir
-                </Button>
+                <div className="flex items-center gap-3 flex-wrap">
+                  {song.audioSrc && (
+                    <audio
+                      controls
+                      className="h-10 min-w-[200px] max-w-full"
+                      src={song.audioSrc}
+                    >
+                      Seu navegador não suporta áudio.
+                    </audio>
+                  )}
+                  {song.spotifyUrl && (
+                    <Button
+                      variant="ghost"
+                      onClick={() => window.open(song.spotifyUrl!, '_blank')}
+                    >
+                      <ExternalLink className="mr-2" />
+                      Ouvir no Spotify
+                    </Button>
+                  )}
+                </div>
               </div>
             </motion.div>
           ))}
