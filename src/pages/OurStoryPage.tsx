@@ -4,8 +4,8 @@ import { Heart, Calendar } from 'lucide-react';
 import PageWrapper from '@/components/PageWrapper';
 import HeartIcon from '@/components/HeartIcon';
 
-/** Data em que começamos a namorar — fixa no código (29/10/2022) */
-const RELATIONSHIP_START_DATE = '2022-10-29';
+/** Data em que começamos a namorar — 29/10/2022 em horário local (evita virar 28/10 por UTC) */
+const RELATIONSHIP_START_DATE = new Date(2022, 9, 29); // ano, mês (0 = jan), dia
 
 interface TimeCounter {
   years: number;
@@ -21,7 +21,7 @@ const OurStoryPage = () => {
 
   useEffect(() => {
     const calculateTime = () => {
-      const start = new Date(RELATIONSHIP_START_DATE);
+      const start = new Date(RELATIONSHIP_START_DATE.getTime());
       const now = new Date();
       const diff = now.getTime() - start.getTime();
       const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -50,11 +50,12 @@ const OurStoryPage = () => {
     </motion.div>
   );
 
-  /** Formata 22/10/2022 para exibição */
-  const formattedStartDate = (() => {
-    const d = new Date(RELATIONSHIP_START_DATE);
-    return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-  })();
+  /** Exibe 29/10/2022 (data em horário local) */
+  const formattedStartDate = RELATIONSHIP_START_DATE.toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
 
   return (
     <PageWrapper>
@@ -76,7 +77,7 @@ const OurStoryPage = () => {
           </p>
         </motion.div>
 
-        {/* Quando tudo começou — data fixa 22/10/2022 */}
+        {/* Quando tudo começou — data fixa 29/10/2022 */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
