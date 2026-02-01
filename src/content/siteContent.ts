@@ -68,7 +68,30 @@ export interface MemoryItem {
 }
 
 export const MEMORIES: MemoryItem[] = [
-  // Exemplos — coloque suas fotos em public/fotos/ e vídeos em public/videos/
-  // { id: '1', type: 'image', url: '/fotos/nossa-foto.jpg', caption: 'Nosso momento' },
-  // { id: '2', type: 'video', url: '/videos/viagem.mp4', caption: 'Viagem juntos' },
+  // Fotos (JPG e PNG — abrem em todos os navegadores)
+  { id: '1', type: 'image', url: '/fotos/ABUI5682.JPG', caption: 'Momento' },
+  { id: '2', type: 'image', url: '/fotos/AHVP5811.JPG', caption: 'Momento' },
+  { id: '3', type: 'image', url: '/fotos/BAHM0858.JPG', caption: 'Momento' },
+  { id: '4', type: 'image', url: '/fotos/BTHE2269.JPG', caption: 'Momento' },
+  { id: '5', type: 'image', url: '/fotos/DCOH2741.JPG', caption: 'Momento' },
+  { id: '6', type: 'image', url: '/fotos/FJIG9741.JPG', caption: 'Momento' },
+  { id: '7', type: 'image', url: '/fotos/FRPG3843.JPG', caption: 'Momento' },
+  { id: '8', type: 'image', url: '/fotos/IBEJ5671.JPG', caption: 'Momento' },
+  { id: '9', type: 'image', url: '/fotos/IMG_0297.PNG', caption: 'Momento' },
+  { id: '10', type: 'image', url: '/fotos/IMG_4050.JPG', caption: 'Momento' },
+  { id: '11', type: 'image', url: '/fotos/IMG_4051.JPG', caption: 'Momento' },
+  { id: '12', type: 'image', url: '/fotos/IMG_4075.JPG', caption: 'Momento' },
+  { id: '13', type: 'image', url: '/fotos/JHEK7882.JPG', caption: 'Momento' },
+  { id: '14', type: 'image', url: '/fotos/KQLB4216.JPG', caption: 'Momento' },
+  { id: '16', type: 'image', url: '/fotos/LOKZ9262.JPG', caption: 'Momento' },
+  { id: '17', type: 'image', url: '/fotos/MHOJ3663.JPG', caption: 'Momento' },
+  { id: '18', type: 'image', url: '/fotos/XCOO3848.JPG', caption: 'Momento' },
+  // HEIC — podem não abrir no Chrome/Edge (Windows); costumam abrir no Safari (iPhone/Mac)
+  { id: '19', type: 'image', url: '/fotos/IMG_3608.HEIC', caption: 'Momento' },
+  { id: '20', type: 'image', url: '/fotos/IMG_3618.HEIC', caption: 'Momento' },
+  { id: '21', type: 'image', url: '/fotos/IMG_4111.HEIC', caption: 'Momento' },
+  { id: '22', type: 'image', url: '/fotos/IMG_4687.HEIC', caption: 'Momento' },
+  { id: '23', type: 'image', url: '/fotos/IMG_5489.HEIC', caption: 'Momento' },
+  // Vídeo (está em public/fotos/)
+  { id: '24', type: 'video', url: '/fotos/WhatsApp%20Video%202026-01-31%20at%2014.16.34.mp4', caption: 'Nosso vídeo' },
 ];
