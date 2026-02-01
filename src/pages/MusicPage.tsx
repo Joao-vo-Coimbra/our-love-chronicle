@@ -1,38 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Music, Play, Pause, Plus, Trash2, ExternalLink } from 'lucide-react';
+import { Music, ExternalLink } from 'lucide-react';
 import PageWrapper from '@/components/PageWrapper';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Song {
   id: string;
   title: string;
-  artist?: string;
   spotify_url: string;
+  message: string;
 }
 
 const MusicPage = () => {
   const [songs, setSongs] = useState<Song[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [currentPlaying, setCurrentPlaying] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  const [newSong, setNewSong] = useState({
-    title: '',
-    artist: '',
-    spotify_url: '',
-  });
 
   // 🔹 BUSCAR MÚSICAS DO SUPABASE
   useEffect(() => {
@@ -40,7 +22,7 @@ const MusicPage = () => {
       const { data } = await supabase
         .from('songs')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: true });
 
       if (data) setSongs(data);
       setLoading(false);
@@ -48,53 +30,6 @@ const MusicPage = () => {
 
     fetchSongs();
   }, []);
-
-  // ➕ ADICIONAR MÚSICA
-  const addSong = async () => {
-    if (!newSong.title || !newSong.spotify_url) return;
-
-    const { data } = await supabase
-      .from('songs')
-      .insert(newSong)
-      .select()
-      .single();
-
-    if (data) {
-      setSongs((prev) => [data, ...prev]);
-      setNewSong({ title: '', artist: '', spotify_url: '' });
-      setIsDialogOpen(false);
-    }
-  };
-
-  // ❌ REMOVER
-  const removeSong = async (id: string) => {
-    await supabase.from('songs').delete().eq('id', id);
-    setSongs((prev) => prev.filter((s) => s.id !== id));
-
-    if (currentPlaying === id) {
-      audioRef.current?.pause();
-      setCurrentPlaying(null);
-    }
-  };
-
-  // ▶️ PLAY
-  const playSong = (song: Song) => {
-    if (song.spotify_url.includes('spotify')) {
-      window.open(song.spotify_url, '_blank');
-      return;
-    }
-
-    if (currentPlaying === song.id) {
-      audioRef.current?.pause();
-      setCurrentPlaying(null);
-    } else {
-      if (audioRef.current) {
-        audioRef.current.src = song.spotify_url;
-        audioRef.current.play();
-        setCurrentPlaying(song.id);
-      }
-    }
-  };
 
   if (loading) {
     return (
@@ -109,6 +44,7 @@ const MusicPage = () => {
   return (
     <PageWrapper>
       <div className="container mx-auto max-w-4xl px-4">
+        {/* HEADER */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -121,83 +57,35 @@ const MusicPage = () => {
           </p>
         </motion.div>
 
-        {/* ADD */}
-        <div className="flex justify-center mb-8">
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button>
-                <Plus className="mr-2" /> Adicionar música
-              </Button>
-            </DialogTrigger>
-
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Nova Música</DialogTitle>
-              </DialogHeader>
-
-              <Input
-                placeholder="Nome da música"
-                value={newSong.title}
-                onChange={(e) =>
-                  setNewSong({ ...newSong, title: e.target.value })
-                }
-              />
-
-              <Input
-                placeholder="Artista (opcional)"
-                value={newSong.artist}
-                onChange={(e) =>
-                  setNewSong({ ...newSong, artist: e.target.value })
-                }
-              />
-
-              <Textarea
-                placeholder="Link Spotify ou MP3"
-                value={newSong.spotify_url}
-                onChange={(e) =>
-                  setNewSong({ ...newSong, spotify_url: e.target.value })
-                }
-              />
-
-              <Button onClick={addSong}>Salvar</Button>
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        {/* LISTA */}
-        <div className="space-y-4">
+        {/* LISTA DE MÚSICAS */}
+        <div className="space-y-6">
           {songs.map((song) => (
-            <div
+            <motion.div
               key={song.id}
-              className="romantic-card flex items-center gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="romantic-card p-6"
             >
-              <button onClick={() => playSong(song)}>
-                {song.spotify_url.includes('spotify') ? (
-                  <ExternalLink />
-                ) : currentPlaying === song.id ? (
-                  <Pause />
-                ) : (
-                  <Play />
-                )}
-              </button>
+              <p className="font-script text-xl text-primary mb-4 text-center">
+                “{song.message}”
+              </p>
 
-              <div className="flex-grow">
-                <h3>{song.title}</h3>
-                {song.artist && (
-                  <p className="text-sm text-muted-foreground">
-                    {song.artist}
-                  </p>
-                )}
+              <div className="flex items-center justify-between gap-4">
+                <h3 className="text-lg font-semibold">{song.title}</h3>
+
+                <Button
+                  variant="ghost"
+                  onClick={() =>
+                    window.open(song.spotify_url, '_blank')
+                  }
+                >
+                  <ExternalLink className="mr-2" />
+                  Ouvir
+                </Button>
               </div>
-
-              <button onClick={() => removeSong(song.id)}>
-                <Trash2 />
-              </button>
-            </div>
+            </motion.div>
           ))}
         </div>
-
-        <audio ref={audioRef} onEnded={() => setCurrentPlaying(null)} />
       </div>
     </PageWrapper>
   );
