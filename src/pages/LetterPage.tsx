@@ -1,91 +1,81 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Plus, Trash2, Lock } from 'lucide-react';
+import { Mail, Save, Lock } from 'lucide-react';
 import PageWrapper from '@/components/PageWrapper';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import HeartIcon from '@/components/HeartIcon';
+import { supabase } from '@/integrations/supabase/client';
 
-interface Note {
-  id: string;
-  content: string;
-  createdAt: string;
-}
+/**
+ * ✨ CARTA FIXA INICIAL
+ * 👉 você pode escrever tudo aqui
+ * 👉 isso só aparece se ainda NÃO existir carta no Supabase
+ */
+const INITIAL_LETTER = `
+Meu amor,
 
-/* 💌 CARTA PRINCIPAL — IMUTÁVEL E GLOBAL */
-const MAIN_LETTER = `
-Isa,
+Desde o dia em que nossas histórias se cruzaram, tudo ganhou um novo sentido.
+Cada detalhe, cada conversa, cada silêncio compartilhado se transformou em lar.
 
-Não estamos juntos, mas eu ainda te amo.
-Confio nos propósitos e nos planos de Deus para nossas vidas.
+Essa carta é para eternizar o que o tempo jamais deve apagar.
+Que ela seja lida com o coração, hoje e sempre.
 
-Me perdoe pelas falhas, pelas vezes em que não falei com você quando precisava,
-por tudo o que aconteceu.
-
-Eu te amo e vou te amar para sempre.
-Estou sempre em oração pela sua vida.
-
-Diante de Deus eu disse que cuidaria de você.
-Diante do bispo eu disse que cuidaria de você.
-Prometi aos seus pais que cuidaria de você.
-Prometi a mim mesmo que cuidaria de você.
-
-E assim farei.
-
-Não sei como você está, mas espero que esteja bem.
-Oro todos os dias para que Deus cuide de ti.
-
-Essa não é uma carta pedindo para voltarmos,
-mas para te dizer o que ainda sinto.
-
-Se quiser conversar, estou disposto.
-Mas preciso que você saiba que, dia após dia,
-eu continuo orando por você e por nós.
-
-Um dia foi dito que nossa relação foi selada por Deus.
-Por isso deixo aqui essa lembrança de nós.
-
-Eu te amo muito.
+Com todo o meu amor. 💖
 `;
 
-/* 🔑 CHAVE DAS NOTAS */
-const NOTES_KEY = 'love_letter_notes';
-
 const LetterPage = () => {
-  /* 📝 BLOCO DE NOTAS */
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [newNote, setNewNote] = useState('');
+  const [letter, setLetter] = useState('');
+  const [isLocked, setIsLocked] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saved, setSaved] = useState(false);
 
-  /* 🔹 CARREGAR NOTAS */
+  // 🔹 BUSCAR CARTA DO SUPABASE (SEGURA)
   useEffect(() => {
-    const savedNotes = localStorage.getItem(NOTES_KEY);
-    if (savedNotes) {
-      setNotes(JSON.parse(savedNotes));
-    }
+    const fetchLetter = async () => {
+      const { data, error } = await supabase
+        .from('letters')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      if (data && data.length > 0) {
+        // 📌 Carta já existe → trava
+        setLetter(data[0].content);
+        setIsLocked(true);
+      } else {
+        // 📌 Ainda não existe → usa a carta inicial
+        setLetter(INITIAL_LETTER.trim());
+        setIsLocked(false);
+      }
+
+      setLoading(false);
+    };
+
+    fetchLetter();
   }, []);
 
-  /* 🔹 SALVAR NOTAS */
-  useEffect(() => {
-    localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
-  }, [notes]);
+  // 🔒 SALVAR CARTA (UMA ÚNICA VEZ)
+  const saveLetter = async () => {
+    if (!letter.trim()) return;
 
-  const addNote = () => {
-    if (!newNote.trim()) return;
+    await supabase.from('letters').insert({
+      content: letter,
+    });
 
-    setNotes((prev) => [
-      {
-        id: Date.now().toString(),
-        content: newNote,
-        createdAt: new Date().toLocaleDateString('pt-BR'),
-      },
-      ...prev,
-    ]);
-
-    setNewNote('');
+    setIsLocked(true);
+    setSaved(true);
   };
 
-  const removeNote = (id: string) => {
-    setNotes((prev) => prev.filter((n) => n.id !== id));
-  };
+  if (loading) {
+    return (
+      <PageWrapper>
+        <div className="text-center py-20 text-muted-foreground">
+          Carregando carta...
+        </div>
+      </PageWrapper>
+    );
+  }
 
   return (
     <PageWrapper>
@@ -105,59 +95,54 @@ const LetterPage = () => {
           </p>
         </motion.div>
 
-        {/* 💌 CARTA PRINCIPAL */}
-        <div className="paper-texture rounded-lg shadow-romantic bg-card p-8 mb-10 relative">
-          <div className="absolute top-4 right-4 flex items-center gap-1 text-muted-foreground">
-            <Lock size={16} />
-            <span className="text-sm">imutável</span>
-          </div>
+        {/* Carta */}
+        <div className="paper-texture rounded-lg shadow-romantic bg-card p-8 relative">
+          {isLocked && (
+            <div className="absolute top-4 right-4 flex items-center gap-1 text-muted-foreground">
+              <Lock size={16} />
+              <span className="text-sm">imutável</span>
+            </div>
+          )}
 
-          <div className="font-script text-xl whitespace-pre-wrap">
-            {MAIN_LETTER}
-          </div>
-        </div>
+          {!isLocked ? (
+            <>
+              <Textarea
+                value={letter}
+                onChange={(e) => setLetter(e.target.value)}
+                className="min-h-[350px] font-script text-xl bg-transparent border-none resize-none"
+              />
 
-        {/* 📝 BLOCO DE NOTAS */}
-        <div className="mb-6">
-          <h2 className="font-display text-3xl text-center mb-4">
-            Anotações & Pensamentos
-          </h2>
-
-          <Textarea
-            value={newNote}
-            onChange={(e) => setNewNote(e.target.value)}
-            placeholder="Aqui você pode escrever livremente..."
-            className="mb-4"
-          />
-
-          <Button onClick={addNote} className="w-full">
-            <Plus className="mr-2" size={18} />
-            Adicionar anotação
-          </Button>
-        </div>
-
-        <div className="space-y-4">
-          {notes.map((note) => (
-            <motion.div
-              key={note.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="p-5 rounded-xl bg-card shadow-soft"
-            >
-              <p className="whitespace-pre-wrap">{note.content}</p>
-              <div className="flex justify-between text-sm text-muted-foreground mt-4">
-                <span>{note.createdAt}</span>
-                <button
-                  onClick={() => removeNote(note.id)}
-                  className="flex items-center gap-1 text-destructive"
-                >
-                  <Trash2 size={14} />
-                  apagar
-                </button>
+              <div className="flex justify-center mt-6">
+                <Button onClick={saveLetter}>
+                  <Save className="mr-2" size={18} />
+                  Selar carta 💕
+                </Button>
               </div>
-            </motion.div>
-          ))}
+            </>
+          ) : (
+            <div className="font-script text-xl whitespace-pre-wrap">
+              {letter}
+            </div>
+          )}
+
+          {saved && (
+            <p className="text-center mt-4 text-primary">
+              Carta guardada para sempre 💖
+            </p>
+          )}
         </div>
+
+        {/* Decorativo */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center mt-12"
+        >
+          <HeartIcon className="mx-auto text-primary mb-4" size={36} />
+          <p className="font-script text-xl text-muted-foreground italic">
+            "O que é verdadeiro, o tempo não apaga."
+          </p>
+        </motion.div>
       </div>
     </PageWrapper>
   );
