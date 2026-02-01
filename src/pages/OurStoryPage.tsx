@@ -4,8 +4,8 @@ import { Heart, Calendar } from 'lucide-react';
 import PageWrapper from '@/components/PageWrapper';
 import HeartIcon from '@/components/HeartIcon';
 
-/** Data em que começamos a namorar — fixa no código (22/10/2022) */
-const RELATIONSHIP_START_DATE = '2022-10-22';
+/** Data em que começamos a namorar — fixa no código (29/10/2022) */
+const RELATIONSHIP_START_DATE = '2022-10-29';
 
 interface TimeCounter {
   years: number;
