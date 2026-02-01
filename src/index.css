@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Dancing+Script:wght@400;500;600;700&family=Lato:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Romantic Design System - Rosa, Branco e Dourado */
+
+@layer base {
+  :root {
+    /* Background: Cream/Off-white */
+    --background: 30 30% 98%;
+    --foreground: 350 25% 25%;
+
+    /* Card: Soft white with warmth */
+    --card: 30 40% 99%;
+    --card-foreground: 350 25% 25%;
+
+    /* Popover */
+    --popover: 30 40% 99%;
+    --popover-foreground: 350 25% 25%;
+
+    /* Primary: Romantic Rose Pink */
+    --primary: 350 60% 72%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: Soft Blush */
+    --secondary: 350 40% 94%;
+    --secondary-foreground: 350 30% 35%;
+
+    /* Muted: Light Pink/Gray */
+    --muted: 350 20% 95%;
+    --muted-foreground: 350 15% 50%;
+
+    /* Accent: Champagne Gold */
+    --accent: 40 50% 75%;
+    --accent-foreground: 40 60% 20%;
+
+    /* Destructive */
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and Inputs */
+    --border: 350 25% 88%;
+    --input: 350 25% 90%;
+    --ring: 350 60% 72%;
+
+    --radius: 0.75rem;
+
+    /* Custom romantic colors */
+    --rose-light: 350 50% 95%;
+    --rose-medium: 350 55% 80%;
+    --rose-dark: 350 45% 45%;
+    --gold: 40 60% 65%;
+    --gold-light: 40 55% 85%;
+    --cream: 30 40% 97%;
+    --blush: 10 50% 92%;
+
+    /* Gradients */
+    --gradient-romantic: linear-gradient(135deg, hsl(350 60% 72%), hsl(350 50% 80%), hsl(40 50% 75%));
+    --gradient-soft: linear-gradient(180deg, hsl(350 50% 95%), hsl(30 30% 98%));
+    --gradient-gold: linear-gradient(135deg, hsl(40 55% 70%), hsl(40 60% 80%));
+
+    /* Shadows */
+    --shadow-romantic: 0 4px 20px -5px hsl(350 60% 72% / 0.3);
+    --shadow-soft: 0 2px 15px -3px hsl(350 30% 50% / 0.15);
+    --shadow-gold: 0 4px 15px -3px hsl(40 60% 50% / 0.3);
+
+    /* Sidebar */
+    --sidebar-background: 350 40% 97%;
+    --sidebar-foreground: 350 25% 30%;
+    --sidebar-primary: 350 60% 72%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 50% 75%;
+    --sidebar-accent-foreground: 40 60% 20%;
+    --sidebar-border: 350 25% 90%;
+    --sidebar-ring: 350 60% 72%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .romantic-card {
+    @apply bg-card rounded-2xl p-6 shadow-romantic border border-border/50;
+    background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--cream)));
+  }
+
+  .paper-texture {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23f5e6e0' fill-opacity='0.4'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .script-text {
+    @apply font-script;
+  }
+
+  .gold-shimmer {
+    background: linear-gradient(135deg, hsl(40 55% 70%), hsl(40 65% 78%), hsl(40 55% 70%));
+    background-size: 200% 200%;
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  .heart-float {
+    animation: heartFloat 3s ease-in-out infinite;
+  }
+}
+
+@layer utilities {
+  .text-romantic-gradient {
+    background: linear-gradient(135deg, hsl(350 60% 60%), hsl(350 50% 72%), hsl(40 50% 65%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes heartFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.05); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
