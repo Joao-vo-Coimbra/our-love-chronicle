@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Calendar, Clock, Sparkles } from 'lucide-react';
+import { Heart, Calendar } from 'lucide-react';
 import PageWrapper from '@/components/PageWrapper';
-import { Input } from '@/components/ui/input';
 import HeartIcon from '@/components/HeartIcon';
+
+/** Data em que começamos a namorar — fixa no código (22/10/2022) */
+const RELATIONSHIP_START_DATE = '2022-10-22';
 
 interface TimeCounter {
   years: number;
@@ -15,91 +17,25 @@ interface TimeCounter {
 }
 
 const OurStoryPage = () => {
-  const [startDate, setStartDate] = useState<string>(() => {
-    return localStorage.getItem('relationship_start_date') || '';
-  });
-  const [weddingDate, setWeddingDate] = useState<string>(() => {
-    return localStorage.getItem('wedding_date') || '';
-  });
   const [counter, setCounter] = useState<TimeCounter | null>(null);
-  const [weddingCounter, setWeddingCounter] = useState<TimeCounter | null>(null);
 
   useEffect(() => {
-    if (startDate) {
-      localStorage.setItem('relationship_start_date', startDate);
-    }
-  }, [startDate]);
-
-  useEffect(() => {
-    if (weddingDate) {
-      localStorage.setItem('wedding_date', weddingDate);
-    }
-  }, [weddingDate]);
-
-  useEffect(() => {
-    if (!startDate) return;
-
     const calculateTime = () => {
-      const start = new Date(startDate);
+      const start = new Date(RELATIONSHIP_START_DATE);
       const now = new Date();
-      
-      let years = now.getFullYear() - start.getFullYear();
-      let months = now.getMonth() - start.getMonth();
-      let days = now.getDate() - start.getDate();
-      
-      if (days < 0) {
-        months--;
-        const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-        days += prevMonth.getDate();
-      }
-      
-      if (months < 0) {
-        years--;
-        months += 12;
-      }
-
       const diff = now.getTime() - start.getTime();
       const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = now.getHours();
       const minutes = now.getMinutes();
       const seconds = now.getSeconds();
 
-      setCounter({ years, months, days: totalDays, hours, minutes, seconds });
+      setCounter({ years: 0, months: 0, days: totalDays, hours, minutes, seconds });
     };
 
     calculateTime();
     const interval = setInterval(calculateTime, 1000);
     return () => clearInterval(interval);
-  }, [startDate]);
-
-  useEffect(() => {
-    if (!weddingDate) {
-      setWeddingCounter(null);
-      return;
-    }
-
-    const calculateWeddingTime = () => {
-      const wedding = new Date(weddingDate);
-      const now = new Date();
-      const diff = wedding.getTime() - now.getTime();
-
-      if (diff <= 0) {
-        setWeddingCounter(null);
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      setWeddingCounter({ years: 0, months: 0, days, hours, minutes, seconds });
-    };
-
-    calculateWeddingTime();
-    const interval = setInterval(calculateWeddingTime, 1000);
-    return () => clearInterval(interval);
-  }, [weddingDate]);
+  }, []);
 
   const CounterBox = ({ value, label }: { value: number; label: string }) => (
     <motion.div
@@ -113,6 +49,12 @@ const OurStoryPage = () => {
       <span className="text-muted-foreground text-sm">{label}</span>
     </motion.div>
   );
+
+  /** Formata 22/10/2022 para exibição */
+  const formattedStartDate = (() => {
+    const d = new Date(RELATIONSHIP_START_DATE);
+    return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  })();
 
   return (
     <PageWrapper>
@@ -134,7 +76,7 @@ const OurStoryPage = () => {
           </p>
         </motion.div>
 
-        {/* Relationship Start Date */}
+        {/* Quando tudo começou — data fixa 22/10/2022 */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -147,13 +89,10 @@ const OurStoryPage = () => {
               Quando tudo começou
             </h2>
           </div>
-          
-          <Input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="bg-secondary/50 max-w-xs"
-          />
+
+          <p className="text-muted-foreground mb-2">
+            Começamos a namorar em <span className="font-semibold text-foreground">{formattedStartDate}</span>
+          </p>
 
           {counter && (
             <motion.div
@@ -170,7 +109,7 @@ const OurStoryPage = () => {
                 <CounterBox value={counter.minutes} label="minutos" />
                 <CounterBox value={counter.seconds} label="segundos" />
               </div>
-              
+
               <div className="mt-6 text-center">
                 <HeartIcon className="text-primary mx-auto animate-heart-beat" size={32} />
               </div>
@@ -178,66 +117,29 @@ const OurStoryPage = () => {
           )}
         </motion.div>
 
-        {/* Wedding Date */}
+        {/* Para sempre — símbolo de infinito, sem data de casamento */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="romantic-card"
+          className="romantic-card text-center py-12"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <Sparkles className="text-accent" size={24} />
-            <h2 className="font-display text-xl text-foreground">
-              Nosso Casamento
-            </h2>
-          </div>
-
-          <p className="text-muted-foreground mb-4">
-            Estamos nos preparando para o dia mais especial das nossas vidas...
+          <motion.span
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            className="font-display text-7xl md:text-8xl text-primary block mb-4 tracking-tighter"
+            aria-hidden
+          >
+            ∞
+          </motion.span>
+          <HeartIcon className="text-primary mx-auto mb-4" size={28} />
+          <p className="font-script text-xl text-muted-foreground italic">
+            Sem data, sem fim
           </p>
-          
-          <Input
-            type="date"
-            value={weddingDate}
-            onChange={(e) => setWeddingDate(e.target.value)}
-            className="bg-secondary/50 max-w-xs"
-          />
-
-          {weddingCounter && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mt-8 text-center"
-            >
-              <p className="text-muted-foreground mb-4 font-script text-xl">
-                Faltam apenas...
-              </p>
-              <div className="flex flex-wrap gap-3 justify-center">
-                <CounterBox value={weddingCounter.days} label="dias" />
-                <CounterBox value={weddingCounter.hours} label="horas" />
-                <CounterBox value={weddingCounter.minutes} label="minutos" />
-                <CounterBox value={weddingCounter.seconds} label="segundos" />
-              </div>
-              
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="mt-6 font-script text-2xl text-primary"
-              >
-                💍 Para sermos oficialmente um só! 💍
-              </motion.p>
-            </motion.div>
-          )}
-
-          {!weddingDate && (
-            <div className="mt-6 text-center text-muted-foreground italic">
-              <p>Defina a data do nosso grande dia...</p>
-            </div>
-          )}
         </motion.div>
 
-        {/* Romantic Message */}
+        {/* Mensagem */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
