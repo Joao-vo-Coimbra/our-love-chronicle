@@ -1,91 +1,80 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Dancing+Script:wght@400;500;600;700&family=Lato:wght@300;400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Mercearia Coimbra - Design System */
+/* Romantic Design System - Rosa, Branco e Dourado */
 
 @layer base {
   :root {
-    /* Background: Clean white */
-    --background: 0 0% 100%;
-    --foreground: 220 20% 15%;
+    /* Background: Cream/Off-white */
+    --background: 30 30% 98%;
+    --foreground: 350 25% 25%;
 
-    /* Card: Subtle gray */
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 15%;
+    /* Card: Soft white with warmth */
+    --card: 30 40% 99%;
+    --card-foreground: 350 25% 25%;
 
     /* Popover */
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 15%;
+    --popover: 30 40% 99%;
+    --popover-foreground: 350 25% 25%;
 
-    /* Primary: Vibrant Red (iFood inspired) */
-    --primary: 0 85% 55%;
+    /* Primary: Romantic Rose Pink */
+    --primary: 350 60% 72%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary: Warm Orange */
-    --secondary: 25 95% 53%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary: Soft Blush */
+    --secondary: 350 40% 94%;
+    --secondary-foreground: 350 30% 35%;
 
-    /* Muted: Light Gray */
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 10% 45%;
+    /* Muted: Light Pink/Gray */
+    --muted: 350 20% 95%;
+    --muted-foreground: 350 15% 50%;
 
-    /* Accent: Fresh Green */
-    --accent: 142 70% 45%;
-    --accent-foreground: 0 0% 100%;
-
-    /* Success */
-    --success: 142 70% 45%;
-    --success-foreground: 0 0% 100%;
-
-    /* Warning */
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
+    /* Accent: Champagne Gold */
+    --accent: 40 50% 75%;
+    --accent-foreground: 40 60% 20%;
 
     /* Destructive */
-    --destructive: 0 84% 60%;
+    --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
 
     /* Borders and Inputs */
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 0 85% 55%;
+    --border: 350 25% 88%;
+    --input: 350 25% 90%;
+    --ring: 350 60% 72%;
 
     --radius: 0.75rem;
 
-    /* Sidebar */
-    --sidebar-background: 220 20% 15%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 0 85% 55%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 25 95% 53%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 220 15% 25%;
-    --sidebar-ring: 0 85% 55%;
-  }
+    /* Custom romantic colors */
+    --rose-light: 350 50% 95%;
+    --rose-medium: 350 55% 80%;
+    --rose-dark: 350 45% 45%;
+    --gold: 40 60% 65%;
+    --gold-light: 40 55% 85%;
+    --cream: 30 40% 97%;
+    --blush: 10 50% 92%;
 
-  .dark {
-    --background: 220 20% 10%;
-    --foreground: 0 0% 95%;
-    --card: 220 18% 14%;
-    --card-foreground: 0 0% 95%;
-    --popover: 220 18% 14%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 0 85% 55%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 25 95% 53%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 220 15% 20%;
-    --muted-foreground: 220 10% 60%;
-    --accent: 142 70% 45%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 15% 25%;
-    --input: 220 15% 25%;
-    --ring: 0 85% 55%;
+    /* Gradients */
+    --gradient-romantic: linear-gradient(135deg, hsl(350 60% 72%), hsl(350 50% 80%), hsl(40 50% 75%));
+    --gradient-soft: linear-gradient(180deg, hsl(350 50% 95%), hsl(30 30% 98%));
+    --gradient-gold: linear-gradient(135deg, hsl(40 55% 70%), hsl(40 60% 80%));
+
+    /* Shadows */
+    --shadow-romantic: 0 4px 20px -5px hsl(350 60% 72% / 0.3);
+    --shadow-soft: 0 2px 15px -3px hsl(350 30% 50% / 0.15);
+    --shadow-gold: 0 4px 15px -3px hsl(40 60% 50% / 0.3);
+
+    /* Sidebar */
+    --sidebar-background: 350 40% 97%;
+    --sidebar-foreground: 350 25% 30%;
+    --sidebar-primary: 350 60% 72%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 40 50% 75%;
+    --sidebar-accent-foreground: 40 60% 20%;
+    --sidebar-border: 350 25% 90%;
+    --sidebar-ring: 350 60% 72%;
   }
 }
 
@@ -99,74 +88,55 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold;
+    @apply font-display;
   }
 }
 
 @layer components {
-  .product-card {
-    @apply bg-card rounded-xl border border-border shadow-sm hover:shadow-md transition-all duration-200;
+  .romantic-card {
+    @apply bg-card rounded-2xl p-6 shadow-romantic border border-border/50;
+    background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--cream)));
   }
 
-  .category-card {
-    @apply bg-card rounded-2xl border border-border p-4 text-center hover:border-primary/50 hover:shadow-lg transition-all duration-200 cursor-pointer;
+  .paper-texture {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%23f5e6e0' fill-opacity='0.4'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 
-  .btn-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6 py-3 font-semibold transition-colors;
+  .script-text {
+    @apply font-script;
   }
 
-  .btn-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full px-6 py-3 font-semibold transition-colors;
+  .gold-shimmer {
+    background: linear-gradient(135deg, hsl(40 55% 70%), hsl(40 65% 78%), hsl(40 55% 70%));
+    background-size: 200% 200%;
+    animation: shimmer 3s ease-in-out infinite;
   }
 
-  .badge-discount {
-    @apply bg-accent text-accent-foreground text-xs font-bold px-2 py-1 rounded-full;
-  }
-
-  .badge-new {
-    @apply bg-secondary text-secondary-foreground text-xs font-bold px-2 py-1 rounded-full;
-  }
-
-  .input-search {
-    @apply bg-muted border-0 rounded-full px-4 py-3 pl-12 w-full focus:ring-2 focus:ring-primary/20 transition-all;
-  }
-
-  .nav-link {
-    @apply text-muted-foreground hover:text-foreground font-medium transition-colors;
-  }
-
-  .nav-link-active {
-    @apply text-primary font-semibold;
+  .heart-float {
+    animation: heartFloat 3s ease-in-out infinite;
   }
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  .text-romantic-gradient {
+    background: linear-gradient(135deg, hsl(350 60% 60%), hsl(350 50% 72%), hsl(40 50% 65%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-
-  .shadow-product {
-    box-shadow: 0 4px 20px -5px hsl(0 0% 0% / 0.1);
-  }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
-::-webkit-scrollbar-track {
-  @apply bg-muted rounded-full;
+@keyframes heartFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.05); }
 }
 
-::-webkit-scrollbar-thumb {
-  @apply bg-border rounded-full hover:bg-muted-foreground/30;
-}
-
-/* Animations */
-@keyframes slideUp {
+@keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -177,15 +147,7 @@
   }
 }
 
-@keyframes pulse-cart {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-
-.animate-slide-up {
-  animation: slideUp 0.3s ease-out;
-}
-
-.animate-pulse-cart {
-  animation: pulse-cart 0.3s ease-out;
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
