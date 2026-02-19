@@ -10,6 +10,8 @@ import MusicPage from "./pages/MusicPage";
 import OurStoryPage from "./pages/OurStoryPage";
 import LetterPage from "./pages/LetterPage";
 import AlbumPage from "./pages/AlbumPage";
+import FormPage from "./pages/FormPage";
+import RespostasPage from "./pages/RespostasPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +47,8 @@ const AppRoutes = () => {
       <Route path="/nossa-historia" element={<ProtectedRoute><OurStoryPage /></ProtectedRoute>} />
       <Route path="/carta" element={<ProtectedRoute><LetterPage /></ProtectedRoute>} />
       <Route path="/album" element={<ProtectedRoute><AlbumPage /></ProtectedRoute>} />
+      <Route path="/formulario" element={<ProtectedRoute><FormPage /></ProtectedRoute>} />
+      <Route path="/respostas" element={<ProtectedRoute><RespostasPage /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

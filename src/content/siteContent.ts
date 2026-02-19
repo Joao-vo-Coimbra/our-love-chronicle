@@ -95,3 +95,15 @@ export const MEMORIES: MemoryItem[] = [
   // Vídeo (está em public/fotos/)
   { id: '24', type: 'video', url: '/fotos/WhatsApp%20Video%202026-01-31%20at%2014.16.34.mp4', caption: 'Nosso vídeo' },
 ];
+
+/**
+ * Formulário via Google Forms
+ * 1. Crie um formulário em forms.google.com
+ * 2. Adicione as perguntas (ex: "Podemos nos encontrar?", "O que você sente?")
+ * 3. Envie → ícone </> (incorporar) → copie o src do iframe
+ * 4. Cole aqui (ex: "https://docs.google.com/forms/d/e/XXXXX/viewform?embedded=true")
+ */
+export const GOOGLE_FORM_EMBED_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdjpbdP7qK31HL_oYyHSbSJ8fk0AIi0-ouIcc6xgDWllwJjEQ/viewform?embedded=true';
+
+/** Link para você ver as respostas (Planilha Google vinculada ao formulário) */
+export const GOOGLE_RESPONSES_LINK = '';

@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Home, Music, Heart, Mail, Image, Menu, X, LogOut } from 'lucide-react';
+import { Home, Music, Heart, Mail, Image, ClipboardList, FileText, Menu, X, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import HeartIcon from './HeartIcon';
@@ -11,6 +11,8 @@ const navItems = [
   { path: '/nossa-historia', label: 'Nossa História', icon: Heart },
   { path: '/carta', label: 'Carta', icon: Mail },
   { path: '/album', label: 'Memórias', icon: Image },
+  { path: '/formulario', label: 'Questionário', icon: ClipboardList },
+  { path: '/respostas', label: 'Respostas', icon: FileText },
 ];
 
 const Navigation = () => {
