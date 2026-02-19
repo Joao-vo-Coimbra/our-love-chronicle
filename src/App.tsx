@@ -11,7 +11,7 @@ import OurStoryPage from "./pages/OurStoryPage";
 import LetterPage from "./pages/LetterPage";
 import AlbumPage from "./pages/AlbumPage";
 import FormPage from "./pages/FormPage";
-import RespostasPage from "./pages/RespostasPage";
+import PedidoPage from "./pages/PedidoPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,7 +48,7 @@ const AppRoutes = () => {
       <Route path="/carta" element={<ProtectedRoute><LetterPage /></ProtectedRoute>} />
       <Route path="/album" element={<ProtectedRoute><AlbumPage /></ProtectedRoute>} />
       <Route path="/formulario" element={<ProtectedRoute><FormPage /></ProtectedRoute>} />
-      <Route path="/respostas" element={<ProtectedRoute><RespostasPage /></ProtectedRoute>} />
+      <Route path="/pedido" element={<ProtectedRoute><PedidoPage /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
